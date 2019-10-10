@@ -97,6 +97,10 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
             selectedServer.setText(R.string.NoServerConnected);
             selectedServerSummary.setText("");
         }
+        ServerConfigView serverConfigView = getView().findViewById(R.id.SettingMainCurrentServer);
+        if (currentConfig.isPresent()) {
+            serverConfigView.setServerConfig( currentConfig.get() );
+        }
     }
 
     private void setSelectedServer(String serverName)

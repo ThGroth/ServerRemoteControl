@@ -26,5 +26,9 @@
         style="@android:style/TextAppearance.DeviceDefault.SearchResult.Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <com.groth.android.videotoserver.settings.ServerConfigView
+        android:id="@+id/SettingMainCurrentServer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
