@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.settings.serveradd;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

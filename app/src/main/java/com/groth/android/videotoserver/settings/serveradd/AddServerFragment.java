@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.settings.serveradd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

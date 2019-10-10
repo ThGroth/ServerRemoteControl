@@ -1,10 +1,9 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.settings.serveradd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.groth.android.videotoserver.R;
 

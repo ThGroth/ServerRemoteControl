@@ -8,8 +8,8 @@ import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.groth.android.videotoserver.ConnectionConfig;
-import com.groth.android.videotoserver.Server;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.Server;
 
 import java.util.ArrayList;
 import java.util.List;

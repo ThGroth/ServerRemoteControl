@@ -27,7 +27,7 @@
             android:label="@string/MainSettingName" >
         </activity>
         <service
-            android:name=".ConnectionHandler"
+            android:name=".connection.ConnectionHandler"
             android:label="Connection Handler"
             android:exported="false"/>
         <provider

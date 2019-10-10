@@ -1,11 +1,10 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.settings.serveradd;
 
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-import com.groth.android.videotoserver.ConnectionConfig;
-import com.groth.android.videotoserver.ServerConnection;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 
 
 public abstract class AbstractAddServerWizardStepFragment extends Fragment {

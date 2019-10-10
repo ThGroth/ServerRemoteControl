@@ -14,8 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.groth.android.videotoserver.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.settings.serveradd.AddServerFragment;
 
 import java.util.List;
 import java.util.Optional;

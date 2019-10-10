@@ -1,19 +1,13 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.connection;
 
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PipedReader;
+import com.groth.android.videotoserver.MainActivity;
+import com.groth.android.videotoserver.connection.ssh.ServerConnectionSSHImpl;
 
 public class ConnectionHandler extends Service
 {
@@ -33,7 +27,7 @@ public class ConnectionHandler extends Service
     }
 
     public class ConnectionHandlerBinder extends Binder {
-        ConnectionHandler getService() {
+        public ConnectionHandler getService() {
             return ConnectionHandler.this;
         }
     }

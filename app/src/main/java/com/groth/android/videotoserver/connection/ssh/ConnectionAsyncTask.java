@@ -1,31 +1,24 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.connection.ssh;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.groth.android.videotoserver.MainActivity;
+import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionState;
 import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.HostKey;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.nio.channels.Pipe;
-import java.util.Base64;
 
-public class ConnectionAsynctask extends AsyncTask<Void , Void , Boolean> {
+public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
 
-    private static final String TAG = ConnectionAsynctask.class.getName();
+    private static final String TAG = ConnectionAsyncTask.class.getName();
     private Session sshSession;
     private String errorMsg = "";
     private final ServerConnectionSSHImpl callingConnectionImpl;
@@ -34,18 +27,16 @@ public class ConnectionAsynctask extends AsyncTask<Void , Void , Boolean> {
     private final MainActivity progressActivity;
     private final ConnectionConfig connectionConfig;
 
-    private ProgressBar progressBar;
     private Channel channel;
 
 
-    public ConnectionAsynctask(ServerConnectionSSHImpl connectionImp,
+    public ConnectionAsyncTask(ServerConnectionSSHImpl connectionImp,
                                final MainActivity progressActivity,
                                final ConnectionConfig connectionConfig)
     {
         this.progressActivity = progressActivity;
         this.connectionConfig = connectionConfig;
         this.callingConnectionImpl = connectionImp;
-
     }
 
 
@@ -57,7 +48,7 @@ public class ConnectionAsynctask extends AsyncTask<Void , Void , Boolean> {
     {
         super.onPreExecute();
         String text = progressActivity.getResources().getString(R.string.status_connecting);
-        progressActivity.setupStatusPanel(MainActivity.ConnectionState.Connecting,
+        progressActivity.setupStatusPanel(ConnectionState.Connecting,
                 String.format(text, connectionConfig.getServer().toString() ));
     }
 
@@ -76,12 +67,12 @@ public class ConnectionAsynctask extends AsyncTask<Void , Void , Boolean> {
             callingConnectionImpl.startConnectionThread(sshSession,channel,cmdStream);
             callingConnectionImpl.setIsConnected(ServerConnectionSSHImpl.ConnectionState.CONNECTED);
             String text = progressActivity.getResources().getString(R.string.status_connected);
-            progressActivity.setupStatusPanel(MainActivity.ConnectionState.Connected,
+            progressActivity.setupStatusPanel(ConnectionState.Connected,
                     String.format(text, connectionConfig.getServer().toString() ));
         }
         else {
             String text = progressActivity.getResources().getString(R.string.readyToConnect);
-            progressActivity.setupStatusPanel(MainActivity.ConnectionState.ReadyToConnect,text );
+            progressActivity.setupStatusPanel(ConnectionState.ReadyToConnect,text );
             progressActivity.displayErrorMessage(errorMsg);
             callingConnectionImpl.setIsConnected(ServerConnectionSSHImpl.ConnectionState.FAILURE);
         }

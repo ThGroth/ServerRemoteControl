@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.settings.serveradd;
 
 
 import android.content.Context;
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.groth.android.videotoserver.ConnectionConfig;
-import com.groth.android.videotoserver.Server;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.Server;
 
 import java.util.HashMap;
 import java.util.List;

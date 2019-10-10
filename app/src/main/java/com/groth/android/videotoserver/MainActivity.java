@@ -8,8 +8,13 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionHandler;
+import com.groth.android.videotoserver.connection.ConnectionState;
+import com.groth.android.videotoserver.connection.ServerConnection;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
+import com.groth.android.videotoserver.touchfield.ButtonHandler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -193,6 +198,4 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public void displayErrorMessage(String errorMsg) {
         Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
     }
-
-    enum ConnectionState{ServiceLoading, ReadyToConnect, Connecting, Connected }
 }

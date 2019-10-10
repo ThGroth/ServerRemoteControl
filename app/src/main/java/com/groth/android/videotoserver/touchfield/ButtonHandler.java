@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.touchfield;
 
 
 import android.content.ComponentName;
@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.view.View;
+
+import com.groth.android.videotoserver.connection.ConnectionHandler;
+import com.groth.android.videotoserver.connection.MouseClicks;
+import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ssh.SSHServerComands;
 
 public class ButtonHandler
         extends ContextWrapper

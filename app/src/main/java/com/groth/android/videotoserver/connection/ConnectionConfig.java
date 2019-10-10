@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.connection;
 
 public class ConnectionConfig {
     
@@ -53,7 +53,7 @@ public class ConnectionConfig {
     }
 
 
-    protected Boolean isKeyBased()
+    public Boolean isKeyBased()
     {
         return privateKeyFile != null; //TODO!
     }

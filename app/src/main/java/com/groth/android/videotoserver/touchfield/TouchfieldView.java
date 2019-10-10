@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.touchfield;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,11 +9,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.IBinder;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.groth.android.videotoserver.connection.ConnectionHandler;
+import com.groth.android.videotoserver.connection.MouseClicks;
 
 public class TouchfieldView extends View implements ServiceConnection
 {

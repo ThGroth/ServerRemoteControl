@@ -1,27 +1,25 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.connection.ssh;
 
-import android.app.Activity;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.jcraft.jsch.Buffer;
+import com.groth.android.videotoserver.MainActivity;
+import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.MouseClicks;
+import com.groth.android.videotoserver.connection.ServerConnection;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UIKeyboardInteractive;
-import com.jcraft.jsch.UserInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.StringWriter;
 
 
 public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComands {
@@ -51,7 +49,7 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComan
 
     public void connect()
     {
-        ConnectionAsynctask connectionTask = new ConnectionAsynctask(this,
+        ConnectionAsyncTask connectionTask = new ConnectionAsyncTask(this,
             statusActivity,
             connectionConfig);
         connectionTask.execute();

@@ -9,8 +9,9 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.groth.android.videotoserver.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.settings.serveradd.AddServerFragment;
 
 import java.util.List;
 import java.util.Optional;

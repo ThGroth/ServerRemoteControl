@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver;
+package com.groth.android.videotoserver.touchfield;
 
 
 import android.graphics.PointF;

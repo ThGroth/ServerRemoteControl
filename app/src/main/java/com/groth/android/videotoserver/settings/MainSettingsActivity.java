@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.groth.android.videotoserver.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
 
 import java.util.List;
