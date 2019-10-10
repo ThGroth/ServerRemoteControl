@@ -1,0 +1,24 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:key="addServer"
+        app:title="@string/addServer"
+        app:summary="@string/addServerDetails" />
+
+    <ListPreference
+        app:key="serverList"
+        app:title="Select Server"
+        app:dialogTitle=""
+        app:summary=""
+        />
+    <PreferenceCategory
+        app:title="Currently Active Server">
+    <Preference
+        app:key="selectedServerInfo"
+        app:selectable="false"
+        app:persistent="false"
+        app:title="No server connected"
+        app:summary="Name:\nIP.IP.IP.IP."/>
+    </PreferenceCategory>
+</PreferenceScreen>
