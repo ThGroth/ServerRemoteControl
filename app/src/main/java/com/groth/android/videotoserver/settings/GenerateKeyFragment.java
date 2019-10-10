@@ -15,8 +15,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.groth.android.videotoserver.MainConstants;
 import com.groth.android.videotoserver.R;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -24,10 +27,12 @@ import com.jcraft.jsch.KeyPair;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GenerateKeyFragment extends Fragment implements View.OnClickListener
@@ -38,7 +43,7 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
     private Button sendKeyButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.generate_key, container, false);
         view.findViewById(R.id.GenerateKey).setOnClickListener(this);
@@ -68,6 +73,7 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
         }
 
         private void copyPublicContentToClipboard() {
+            if (getContext() == null) return;
             ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             if (publicKeyFile == null) {
                 toastErrorMessage(getString(R.string.ErrorNoKeyGeneratedYet));
@@ -93,15 +99,23 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
         }
 
         private void sendPublicKeyByMail(){
-            Uri path = Uri.fromFile( publicKeyFile );
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            // set the type to 'email'
-            emailIntent .setType("vnd.android.cursor.dir/email");
-            // the attachment
-            emailIntent .putExtra(Intent.EXTRA_STREAM, path);
-            // the mail subject
-            emailIntent .putExtra(Intent.EXTRA_SUBJECT, "PublicKey");
-            startActivity(Intent.createChooser(emailIntent , "Send email..."));
+            File cachedFile = new File(getActivity().getCacheDir(), publicKeyFile.getName());
+            try {
+                copy(publicKeyFile,cachedFile);
+            } catch (IOException e) {
+                toastErrorMessage("Error copying File to cache.");
+                return;
+            }
+
+            Uri contentUri = FileProvider.getUriForFile(getActivity(),
+                    MainConstants.FILE_AUTHORITY, cachedFile);
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            shareIntent.setType("text/plain");
+            getActivity().startActivity(
+                    Intent.createChooser(shareIntent, getActivity().getString(R.string.share)));
+
         }
 
         private void generateNewKey() {
@@ -119,8 +133,8 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
             }
             String filename = android.os.Build.MODEL + "_key";
             String filenamePub = filename+".pub";
-            File privateFile = null;
-            File publicFile = null;
+            File privateFile;
+            File publicFile;
             if (externalInternal.isChecked()) {
                 privateFile = new File(getContext().getExternalFilesDir(null), filename);
                 publicFile = new File(getContext().getExternalFilesDir(null), filenamePub);
@@ -131,7 +145,7 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
             }
 
 
-            KeyPair keyPair= null;
+            KeyPair keyPair;
             try {
                 OutputStream privateOS = new FileOutputStream(privateFile);
                 OutputStream publicOS = new FileOutputStream(publicFile);
@@ -157,9 +171,21 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
     }
 
     private void toastErrorMessage(String msg ) {
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG);
+        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
     }
 
 
+    private void copy(File src, File dst) throws IOException {
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
+        }
+    }
 
 }

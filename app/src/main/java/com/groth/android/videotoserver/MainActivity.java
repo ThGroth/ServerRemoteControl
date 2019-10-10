@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -81,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.INTERNET},
                         10);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         } else {
             // Permission has already been granted
@@ -138,16 +135,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      * react to the user tapping/selecting an options menu item
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings:
-                //Toast.makeText(this, "ADD!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(this, MainSettingsActivity.class);
-                startActivity(i);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (R.id.settings == item.getItemId()) {
+            //Toast.makeText(this, "ADD!", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, MainSettingsActivity.class);
+            startActivity(i);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 
