@@ -44,6 +44,13 @@ public class ServerConfigView extends LinearLayout {
         getTextAtChild(4).setText( authMeth );
     }
 
+    public void setNoServerConfig() {
+
+        // First child is just the label, so we skip this one and start with index 1
+        getTextAtChild(1).setText(R.string.NoServerConnected);
+
+    }
+
 
     private TextView getTextAtChild(int index){
         LinearLayout lin = (LinearLayout) getChildAt(index);

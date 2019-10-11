@@ -87,20 +87,12 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void initSelectedServer( Optional<ConnectionConfig> currentConfig) {
-        TextView selectedServer = getView().findViewById(R.id.SettingMainCurrentServerTitle);
-        TextView selectedServerSummary = getView().findViewById(R.id.SettingMainCurrentServerSummary);
-
-        if (currentConfig.isPresent()) {
-            selectedServer.setText(currentConfig.get().getServer().getName());
-            selectedServerSummary.setText(currentConfig.get().getServer().getIp());
-        }
-        else {
-            selectedServer.setText(R.string.NoServerConnected);
-            selectedServerSummary.setText("");
-        }
         ServerConfigView serverConfigView = getView().findViewById(R.id.SettingMainCurrentServer);
         if (currentConfig.isPresent()) {
             serverConfigView.setServerConfig( currentConfig.get() );
+        }
+        else {
+            serverConfigView.setNoServerConfig();
         }
     }
 
