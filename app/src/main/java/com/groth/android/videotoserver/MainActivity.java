@@ -14,7 +14,7 @@ import com.groth.android.videotoserver.connection.ConnectionState;
 import com.groth.android.videotoserver.connection.ServerConnection;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
-import com.groth.android.videotoserver.touchfield.ButtonHandler;
+import com.groth.android.videotoserver.views.touchfield.ButtonHandler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

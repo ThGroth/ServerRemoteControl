@@ -15,7 +15,7 @@ public class AddServerWizardStepPrivateKey extends AbstractAddServerWizardStepFr
     }
 
     @Override
-    void unbind() {
+    protected void unbind() {
         // TODO
     }
 

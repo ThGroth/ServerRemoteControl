@@ -38,7 +38,7 @@ public class AddServerWizardStepCredentials extends AbstractAddServerWizardStepF
 
 
     @Override
-    void unbind() {
+    protected void unbind() {
         EditText user = getView().findViewById(R.id.AddServerUsername);
         getNewConnectionConfig().setUser(user.getText().toString());
 

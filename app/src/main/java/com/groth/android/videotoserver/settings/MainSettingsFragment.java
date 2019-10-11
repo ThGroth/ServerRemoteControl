@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
 import com.groth.android.videotoserver.settings.serveradd.AddServerFragment;
+import com.groth.android.videotoserver.views.ServerConfigView;
 
 import java.util.List;
 import java.util.Optional;

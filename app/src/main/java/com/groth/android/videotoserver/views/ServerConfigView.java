@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.settings;
+package com.groth.android.videotoserver.views;
 
 
 import android.content.Context;
@@ -32,16 +32,16 @@ public class ServerConfigView extends LinearLayout {
         if (config==null || config.getServer()==null) {
             return;
         }
-
-        getTextAtChild(0).setText(config.getServer().getName());
+        // First child is just the label, so we skip this one and start with index 1
+        getTextAtChild(1).setText(config.getServer().getName());
 
         String ipAndPort = config.getServer().getIp()+":"+config.getServer().getPort();
-        getTextAtChild(1).setText(ipAndPort);
+        getTextAtChild(2).setText(ipAndPort);
 
-        getTextAtChild(2).setText( config.getUser() );
+        getTextAtChild(3).setText( config.getUser() );
 
         String authMeth = config.isKeyBased() ? "Key" : "Password";
-        getTextAtChild(3).setText( authMeth );
+        getTextAtChild(4).setText( authMeth );
     }
 
 

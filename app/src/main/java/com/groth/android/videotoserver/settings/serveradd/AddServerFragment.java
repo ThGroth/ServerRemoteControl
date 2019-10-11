@@ -58,7 +58,7 @@ public class AddServerFragment extends Fragment implements ViewPager.OnPageChang
             // and show Warning.
             //TODO
 
-            ((AbstractAddServerWizardStepFragment) adapter.getItem(previousPage)).unbind();
+            ((AbstractAddServerWizardStepFragment) adapter.getItem(previousPage)).unbindStep();
         }
         previousPage = position;
     }

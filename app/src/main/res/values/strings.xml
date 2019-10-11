@@ -47,7 +47,8 @@
     <string name="KeyGenerated">Key generated. Fingerprint is:</string>
     <string name="SendPublicKey">Share public Key</string>
     <string name="share">share</string>
-    <string name="AuthMethod">Authentification Method</string>
+    <string name="AuthMethod">Authentication Method</string>
     <string name="ServerUser">Username for Server</string>
+    <string name="currentServer">Currently Selected Server</string>
 
 </resources>

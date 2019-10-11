@@ -22,7 +22,7 @@ public class AddServerWizardStepGeneral extends AbstractAddServerWizardStepFragm
     }
 
     @Override
-    void unbind() {
+    protected void unbind() {
         EditText serverName = ((EditText) getView().findViewById(R.id.AddServerName));
         getNewConnectionConfig().getServer().setName( serverName.getText().toString() );
 

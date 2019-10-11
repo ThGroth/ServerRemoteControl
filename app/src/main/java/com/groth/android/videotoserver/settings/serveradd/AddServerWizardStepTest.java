@@ -17,7 +17,7 @@ public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment
     }
 
     @Override
-    void unbind() {
+    protected void unbind() {
         // TODO
     }
 

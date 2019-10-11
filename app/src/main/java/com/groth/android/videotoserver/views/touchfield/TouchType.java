@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.touchfield;
+package com.groth.android.videotoserver.views.touchfield;
 
 public enum TouchType { NONE,CLICK, MOVE, DRAG, SCROLL, ZOOM
 }

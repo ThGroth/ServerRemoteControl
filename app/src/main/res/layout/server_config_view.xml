@@ -1,51 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <LinearLayout
-        style="@style/FormItem"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/currentServer"
+        android:textSize="@dimen/font_size_large"
+        android:textStyle="bold"/>
 
+    <LinearLayout
+        style="@style/FormItem">
         <TextView
             style="@style/FormLabel"
             android:text="@string/serverName" />
-
         <TextView
-            android:id="@+id/ServerName"
             style="@style/FormText" />
     </LinearLayout>
 
     <LinearLayout style="@style/FormItem">
-
         <TextView
             style="@style/FormLabel"
             android:text="@string/serverIP" />
-
-        <TextView
-            android:id="@+id/ServerIP"
-            style="@style/FormText" />
+        <TextView style="@style/FormText" />
     </LinearLayout>
 
     <LinearLayout style="@style/FormItem">
-
         <TextView
             style="@style/FormLabel"
             android:text="@string/ServerUser" />
-
         <TextView
-            android:id="@+id/ServerUsername"
             style="@style/FormText" />
     </LinearLayout>
 
     <LinearLayout style="@style/FormItem">
-
         <TextView
             style="@style/FormLabel"
             android:text="@string/AuthMethod" />
-
         <TextView
-            android:id="@+id/ServerAuthMethod"
             style="@style/FormText" />
     </LinearLayout>
 </merge>
