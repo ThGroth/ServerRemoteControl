@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.groth.android.videotoserver.MainConstants;
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFragment;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.KeyPair;
@@ -34,10 +36,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 
-public class GenerateKeyFragment extends Fragment implements View.OnClickListener
+public class GenerateKeyFragment extends AbstractConnectionConfigChangeFragment implements View.OnClickListener
 {
-
     private File publicKeyFile = null;
     private Button copyKeyButton;
     private Button sendKeyButton;
@@ -162,6 +164,11 @@ public class GenerateKeyFragment extends Fragment implements View.OnClickListene
             } catch (JSchException | FileNotFoundException e) {
                 e.printStackTrace();
             }
+            // Save generated filename and passphrase in ConnectionConfig
+            ConnectionConfig currentConfig = getCurrentConnectionConfig().get();
+            currentConfig.setPassphrase(passphrase.getText().toString());
+            currentConfig.setPrivateKeyFile(privateFile.getAbsolutePath());
+            getOnConnectionChangeListener().onCurrentConnectionConfigChange(currentConfig,false);
         }
 
     private void successNoteAndEnableButton(String fingerPrint) {

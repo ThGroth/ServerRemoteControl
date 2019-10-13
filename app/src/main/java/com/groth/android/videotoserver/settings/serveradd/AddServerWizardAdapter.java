@@ -1,14 +1,10 @@
 package com.groth.android.videotoserver.settings.serveradd;
 
-
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.groth.android.videotoserver.connection.ConnectionConfig;
-import com.groth.android.videotoserver.connection.Server;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,19 +12,16 @@ import java.util.Map;
 
 
 class AddServerWizardAdapter extends FragmentPagerAdapter {
-    private final Context context;
     public List<String> fragmentsClassNames;
     public Map<String, AbstractAddServerWizardStepFragment> fragmentClasses = new HashMap<>();
     private FragmentManager fragmentManager;
-    private final ConnectionConfig newConnectionConfig;
+    private Context context;
 
     public AddServerWizardAdapter(FragmentManager fm, List<String> fragmentsClassNames, Context context) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         fragmentManager = fm;
         this.fragmentsClassNames = fragmentsClassNames;
         this.context = context;
-        newConnectionConfig = new ConnectionConfig();
-        newConnectionConfig.setServer(new Server());
     }
 
     private AbstractAddServerWizardStepFragment loadFragmentForClassName(String className) {
@@ -41,10 +34,10 @@ class AddServerWizardAdapter extends FragmentPagerAdapter {
         {
             fragment = (AbstractAddServerWizardStepFragment) fragmentManager.getFragmentFactory().
                     instantiate(ClassLoader.getSystemClassLoader(), className);
-            fragment.setContext( context );
-            fragment.setNewConnectionConfig( newConnectionConfig );
             fragmentClasses.put(className, fragment);
+
         }
+        fragment.setContext(context);
         return fragment;
     }
 
@@ -65,7 +58,4 @@ class AddServerWizardAdapter extends FragmentPagerAdapter {
         return loadFragmentForClassName(fragmentsClassNames.get(position)).getPageTitle();
     }
 
-    public ConnectionConfig getNewConnectionConfig() {
-        return newConnectionConfig;
-    }
 }

@@ -5,17 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddServerFragment extends Fragment implements ViewPager.OnPageChangeListener {
+public class AddServerFragment extends AbstractConnectionConfigChangeFragment implements ViewPager.OnPageChangeListener {
 
     private AddServerWizardAdapter adapter;
     private int previousPage = 0;
@@ -23,8 +24,8 @@ public class AddServerFragment extends Fragment implements ViewPager.OnPageChang
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_server_pager, container,false);
-        
+        View view = inflater.inflate(R.layout.add_server_pager, container, false);
+
         ViewPager pager = view.findViewById(R.id.addServerPager);
         List<String> pagerSteps = new ArrayList<>();
         pagerSteps.add(AddServerWizardStepGeneral.class.getName());
@@ -32,9 +33,9 @@ public class AddServerFragment extends Fragment implements ViewPager.OnPageChang
         pagerSteps.add(AddServerWizardStepPrivateKey.class.getName());
         pagerSteps.add(AddServerWizardStepTest.class.getName());
 
-        adapter = new AddServerWizardAdapter(getChildFragmentManager(),pagerSteps,getContext());
+        adapter = new AddServerWizardAdapter(getChildFragmentManager(), pagerSteps, getContext());
 
-        pager.addOnPageChangeListener( this );
+        pager.addOnPageChangeListener(this);
 
         pager.setAdapter(adapter);
 
@@ -52,8 +53,7 @@ public class AddServerFragment extends Fragment implements ViewPager.OnPageChang
 
     @Override
     public void onPageSelected(int position) {
-        if (previousPage >= 0)
-        {
+        if (previousPage >= 0) {
             // first validate and only then unbind otherwise select previous page
             // and show Warning.
             //TODO
@@ -68,4 +68,13 @@ public class AddServerFragment extends Fragment implements ViewPager.OnPageChang
         return;
     }
 
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        if (childFragment instanceof AbstractConnectionConfigChangeFragment) {
+            ((AbstractConnectionConfigChangeFragment) childFragment)
+                    .setOnConnectionChangeListener(getOnConnectionChangeListener());
+        }
+        super.onAttachFragment(childFragment);
+
+    }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 
 public class AddServerWizardStepGeneral extends AbstractAddServerWizardStepFragment {
 
@@ -18,22 +19,21 @@ public class AddServerWizardStepGeneral extends AbstractAddServerWizardStepFragm
     @Override
     public String getPageTitle() {
         return getContext().getString(R.string.generalServerInfo);
-        //return getString(R.string.generalServerInfo);
     }
 
     @Override
-    protected void unbind() {
-        EditText serverName = ((EditText) getView().findViewById(R.id.AddServerName));
-        getNewConnectionConfig().getServer().setName( serverName.getText().toString() );
+    protected void unbind(ConnectionConfig connectionConfig) {
+        EditText serverName =  getView().findViewById(R.id.AddServerName);
+        connectionConfig.getServer().setName( serverName.getText().toString() );
 
-        EditText ip = ((EditText) getView().findViewById(R.id.AddServerIP));
-        getNewConnectionConfig().getServer().setIp( ip.getText().toString() );
+        EditText ip = getView().findViewById(R.id.AddServerIP);
+        connectionConfig.getServer().setIp( ip.getText().toString() );
 
-        EditText display = ((EditText) getView().findViewById(R.id.AddServerDisplayID));
-        getNewConnectionConfig().getServer().setXScreen( display.getText().toString() );
+        EditText display = getView().findViewById(R.id.AddServerDisplayID);
+        connectionConfig.getServer().setXScreen( display.getText().toString() );
 
-        EditText port = ((EditText) getView().findViewById(R.id.AddServerPort));
-        getNewConnectionConfig().getServer().setPort( Integer.parseInt(port.getText().toString() ));
+        EditText port = getView().findViewById(R.id.AddServerPort);
+        connectionConfig.getServer().setPort( Integer.parseInt(port.getText().toString() ));
     }
 
     @Override

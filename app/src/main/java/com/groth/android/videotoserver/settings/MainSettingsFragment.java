@@ -8,11 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
@@ -24,15 +22,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class MainSettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
-    private ServerConfigPreferenceManager manager;
-    private List<ConnectionConfig> serverList;
+public class MainSettingsFragment extends AbstractConnectionConfigChangeFragment
+        implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        manager = ServerConfigPreferenceManager.getInstance();
     }
 
     @Nullable
@@ -55,8 +50,8 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
     private void initServerList() {
         Spinner serverSelectSpinner = getView().findViewById(R.id.SettingMainSelectServer );
         /* get the list of servers from Preferences */
-        serverList = manager.getServerConfigFromDB(getActivity());
-        List<String> serverNames = serverList
+
+        List<String> serverNames = getConnectionConfigList()
                 .stream()
                 .map(ConnectionConfig::toString)
                 .collect(Collectors.toList() );
@@ -74,6 +69,7 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
         serverAddButton.setOnClickListener(v ->
         {
             AddServerFragment nextFrag = new AddServerFragment();
+            getOnConnectionChangeListener().newCurrentConnectionConfig();
             getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.MainSettingFragmentContainer, nextFrag)
                 .addToBackStack(null)
@@ -83,7 +79,7 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
 
     private void initSelectedServer() {
         /* get Current server from preferences */
-        initSelectedServer( manager.getCurrentServerConfig(getContext()) );
+        initSelectedServer( getCurrentConnectionConfig() );
     }
 
     private void initSelectedServer( Optional<ConnectionConfig> currentConfig) {
@@ -98,16 +94,14 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
 
     private void setSelectedServer(String serverName)
     {
-        Optional<ConnectionConfig> currentConfig = serverList.stream()
+        Optional<ConnectionConfig> currentConfig = getConnectionConfigList().stream()
                 .filter(conConf->serverName.equals(conConf.getServer().toString()) )
                 .findAny();
         if (currentConfig.isPresent()) {
-            manager.setCurrentServerConfig(currentConfig.get(), getActivity());
+            getOnConnectionChangeListener().onCurrentConnectionConfigChange(currentConfig.get(),true);
         }
         initSelectedServer(currentConfig);
     }
-
-
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
@@ -118,7 +112,6 @@ public class MainSettingsFragment extends Fragment implements AdapterView.OnItem
     public void onNothingSelected(AdapterView<?> adapterView) {
         setSelectedServer("");
     }
-
 
 
     }

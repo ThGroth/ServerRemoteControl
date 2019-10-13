@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 
 public class AddServerWizardStepPrivateKey extends AbstractAddServerWizardStepFragment {
 
@@ -15,7 +16,7 @@ public class AddServerWizardStepPrivateKey extends AbstractAddServerWizardStepFr
     }
 
     @Override
-    protected void unbind() {
+    protected void unbind(ConnectionConfig connectionConfig) {
         // TODO
     }
 

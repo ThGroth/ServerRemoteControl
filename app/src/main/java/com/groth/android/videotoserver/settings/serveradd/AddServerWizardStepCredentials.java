@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 
 public class AddServerWizardStepCredentials extends AbstractAddServerWizardStepFragment {
+
 
     @Override
     public String getPageTitle() {
@@ -38,21 +40,21 @@ public class AddServerWizardStepCredentials extends AbstractAddServerWizardStepF
 
 
     @Override
-    protected void unbind() {
+    protected void unbind(ConnectionConfig connectionConfig) {
         EditText user = getView().findViewById(R.id.AddServerUsername);
-        getNewConnectionConfig().setUser(user.getText().toString());
+        connectionConfig.setUser(user.getText().toString());
 
         Switch usePassword = getView().findViewById(R.id.AddServerUsePassword);
         if( usePassword.isChecked() ) {
             EditText password = getView().findViewById(R.id.AddServerPassword);
-            getNewConnectionConfig().setPassword(password.getText().toString());
+            connectionConfig.setPassword(password.getText().toString());
         }
         else {
             EditText passphrase = getView().findViewById(R.id.AddServerPassphrase);
-            getNewConnectionConfig().setPassphrase(passphrase.getText().toString());
+            connectionConfig.setPassphrase(passphrase.getText().toString());
 
             EditText privateKey = getView().findViewById(R.id.AddServerPrivateKey);
-            getNewConnectionConfig().setPrivateKeyFile(privateKey.getText().toString());
+            connectionConfig.setPrivateKeyFile(privateKey.getText().toString());
         }
     }
 

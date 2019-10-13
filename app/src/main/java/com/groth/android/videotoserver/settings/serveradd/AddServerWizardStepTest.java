@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
 
 public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment {
@@ -17,7 +18,7 @@ public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment
     }
 
     @Override
-    protected void unbind() {
+    protected void unbind(ConnectionConfig connectionConfig) {
         // TODO
     }
 
@@ -41,9 +42,7 @@ public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment
 
     private void saveNewServer()
     {
-        ServerConfigPreferenceManager manager = ServerConfigPreferenceManager.getInstance();
-        manager.addToStore(getNewConnectionConfig(), getContext());
-        manager.setCurrentServerConfig(getNewConnectionConfig(), getContext());
+        getOnConnectionChangeListener().onConnectionConfigAdded(getCurrentConnectionConfig().get());
     }
 }
 

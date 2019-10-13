@@ -1,38 +1,26 @@
 package com.groth.android.videotoserver.settings.serveradd;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
+import android.content.Context;
+
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFragment;
 
 
-public abstract class AbstractAddServerWizardStepFragment extends Fragment {
-
+public abstract class AbstractAddServerWizardStepFragment
+        extends AbstractConnectionConfigChangeFragment {
     private Context context;
-    private ConnectionConfig newConnectionConfig;
 
-    public void setContext(Context context)
-    {
-        this.context = context;
-    }
-
-    public Context getContext()
-    {
+    @Nullable
+    @Override
+    public Context getContext() {
         return context;
     }
 
-    public ConnectionConfig getNewConnectionConfig() {
-        return newConnectionConfig;
-    }
-
-    public void setNewConnectionConfig(ConnectionConfig newConnectionConfig) {
-        this.newConnectionConfig = newConnectionConfig;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void unbindStep() {
@@ -41,10 +29,18 @@ public abstract class AbstractAddServerWizardStepFragment extends Fragment {
             return;
         }
         // Step specific implementation here
-        unbind();
+        unbind(getCurrentConnectionConfig().orElse(getNewConnectionConfig()));
+        if (getOnConnectionChangeListener() != null);
+        {
+            getOnConnectionChangeListener().
+                    onCurrentConnectionConfigChange(getCurrentConnectionConfig().get(),false);
+        }
     }
 
     abstract public  String getPageTitle();
-    protected abstract void unbind();
+    protected abstract void unbind(ConnectionConfig connectionConfig);
     abstract boolean isValid();
+
+
+
 }
