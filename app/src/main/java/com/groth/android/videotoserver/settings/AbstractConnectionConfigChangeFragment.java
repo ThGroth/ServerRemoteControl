@@ -23,7 +23,7 @@ public abstract class AbstractConnectionConfigChangeFragment extends Fragment {
         this.onConnectionChangeListener = onConnectionChangeListener;
     }
 
-    public Optional<ConnectionConfig> getCurrentConnectionConfig() {
+    public ConnectionConfig getCurrentConnectionConfig() {
         return getOnConnectionChangeListener().getCurrentConnectionConfig();
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractConnectionConfigChangeFragment extends Fragment {
         void onCurrentConnectionConfigChange(ConnectionConfig connectionConfig, boolean storeOnDB);
         ConnectionConfig newCurrentConnectionConfig();
         void onConnectionConfigAdded(ConnectionConfig connectionConfig);
-        Optional<ConnectionConfig> getCurrentConnectionConfig();
+        ConnectionConfig getCurrentConnectionConfig();
         List<ConnectionConfig> getConnectionConfigList();
     }
 

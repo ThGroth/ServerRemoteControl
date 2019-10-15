@@ -21,6 +21,11 @@ public class AddServerWizardStepPrivateKey extends AbstractAddServerWizardStepFr
     }
 
     @Override
+    protected void bind(ConnectionConfig connectionConfig) {
+
+    }
+
+    @Override
     boolean isValid() {
         // TODO
         return true;

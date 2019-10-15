@@ -82,10 +82,10 @@ public class MainSettingsFragment extends AbstractConnectionConfigChangeFragment
         initSelectedServer( getCurrentConnectionConfig() );
     }
 
-    private void initSelectedServer( Optional<ConnectionConfig> currentConfig) {
+    private void initSelectedServer( ConnectionConfig currentConfig) {
         ServerConfigView serverConfigView = getView().findViewById(R.id.SettingMainCurrentServer);
-        if (currentConfig.isPresent()) {
-            serverConfigView.setServerConfig( currentConfig.get() );
+        if (currentConfig != null) {
+            serverConfigView.setServerConfig( currentConfig );
         }
         else {
             serverConfigView.setNoServerConfig();
@@ -99,8 +99,9 @@ public class MainSettingsFragment extends AbstractConnectionConfigChangeFragment
                 .findAny();
         if (currentConfig.isPresent()) {
             getOnConnectionChangeListener().onCurrentConnectionConfigChange(currentConfig.get(),true);
+            initSelectedServer(currentConfig.get());
         }
-        initSelectedServer(currentConfig);
+
     }
 
     @Override

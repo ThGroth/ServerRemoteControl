@@ -23,6 +23,11 @@ public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment
     }
 
     @Override
+    protected void bind(ConnectionConfig connectionConfig) {
+
+    }
+
+    @Override
     boolean isValid() {
         // TODO
         return true;
@@ -42,7 +47,7 @@ public class AddServerWizardStepTest extends AbstractAddServerWizardStepFragment
 
     private void saveNewServer()
     {
-        getOnConnectionChangeListener().onConnectionConfigAdded(getCurrentConnectionConfig().get());
+        getOnConnectionChangeListener().onConnectionConfigAdded(getCurrentConnectionConfig() );
     }
 }
 

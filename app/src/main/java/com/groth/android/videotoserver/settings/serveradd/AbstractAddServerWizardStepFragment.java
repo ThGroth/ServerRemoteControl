@@ -1,12 +1,18 @@
 package com.groth.android.videotoserver.settings.serveradd;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFragment;
+
+import java.util.Optional;
 
 
 public abstract class AbstractAddServerWizardStepFragment
@@ -23,24 +29,36 @@ public abstract class AbstractAddServerWizardStepFragment
         this.context = context;
     }
 
+    private void bindStep() {
+        bind( getCurrentConnectionConfig() );
+    }
+
+    @Override
+    public void onPause() {
+        unbindStep();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        bindStep();
+        super.onResume();
+    }
+
     public void unbindStep() {
         // If there is no View any more, we cannot unbind.
         if (getView() == null) {
             return;
         }
         // Step specific implementation here
-        unbind(getCurrentConnectionConfig().orElse(getNewConnectionConfig()));
-        if (getOnConnectionChangeListener() != null);
-        {
-            getOnConnectionChangeListener().
-                    onCurrentConnectionConfigChange(getCurrentConnectionConfig().get(),false);
-        }
+        ConnectionConfig before = getCurrentConnectionConfig();
+        unbind( getCurrentConnectionConfig() );
     }
 
     abstract public  String getPageTitle();
     protected abstract void unbind(ConnectionConfig connectionConfig);
+    protected abstract void bind(ConnectionConfig connectionConfig);
     abstract boolean isValid();
-
 
 
 }

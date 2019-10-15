@@ -56,8 +56,8 @@ public class MainSettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public Optional<ConnectionConfig> getCurrentConnectionConfig() {
-        return Optional.ofNullable(currentConfig);
+    public ConnectionConfig getCurrentConnectionConfig() {
+        return currentConfig;
     }
 
     @Override

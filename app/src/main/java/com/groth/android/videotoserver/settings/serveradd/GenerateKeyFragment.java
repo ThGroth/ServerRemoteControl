@@ -165,7 +165,7 @@ public class GenerateKeyFragment extends AbstractConnectionConfigChangeFragment 
                 e.printStackTrace();
             }
             // Save generated filename and passphrase in ConnectionConfig
-            ConnectionConfig currentConfig = getCurrentConnectionConfig().get();
+            ConnectionConfig currentConfig = getCurrentConnectionConfig();
             currentConfig.setPassphrase(passphrase.getText().toString());
             currentConfig.setPrivateKeyFile(privateFile.getAbsolutePath());
             getOnConnectionChangeListener().onCurrentConnectionConfigChange(currentConfig,false);

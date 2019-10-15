@@ -59,6 +59,34 @@ public class AddServerWizardStepCredentials extends AbstractAddServerWizardStepF
     }
 
     @Override
+    protected void bind(ConnectionConfig connectionConfig) {
+        String user = connectionConfig.getUser();
+        EditText inputUser = getView().findViewById(R.id.AddServerUsername);
+        inputUser.setText( user == null ? "" : user );
+
+        if (connectionConfig.isKeyBased()) {
+            String passphrase = connectionConfig.getPassphrase();
+            String privateKey = connectionConfig.getPrivateKeyFile();
+
+            EditText inputPassphrase = getView().findViewById(R.id.AddServerPassphrase);
+            inputPassphrase.setText(passphrase==null ? "" : passphrase);
+
+            EditText inputPrivateKey = getView().findViewById(R.id.AddServerPrivateKey);
+            inputPrivateKey.setText(privateKey == null ? "" : privateKey);
+
+            ((Switch) getView().findViewById(R.id.AddServerUsePassword)).setChecked(false);
+        }
+        else {
+            String password = connectionConfig.getPassword();
+
+            EditText inputPassword = getView().findViewById(R.id.AddServerPassword);
+            inputPassword.setText(password==null ? "" : password);
+
+            ((Switch) getView().findViewById(R.id.AddServerUsePassword)).setChecked(true);
+        }
+    }
+
+    @Override
     boolean isValid() {
         // TODO
         return true;

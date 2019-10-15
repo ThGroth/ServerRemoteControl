@@ -37,6 +37,26 @@ public class AddServerWizardStepGeneral extends AbstractAddServerWizardStepFragm
     }
 
     @Override
+    protected void bind(ConnectionConfig connectionConfig) {
+
+        String serverName = connectionConfig.getServer().getName();
+        EditText inputServerName =  getView().findViewById(R.id.AddServerName);
+        inputServerName.setText( serverName == null ? "" : serverName );
+
+        String ip = connectionConfig.getServer().getIp();
+        EditText inputIp = getView().findViewById(R.id.AddServerIP);
+        inputIp.setText( ip == null ? "" : ip );
+
+        String display = connectionConfig.getServer().getXScreen();
+        EditText inputDisplay = getView().findViewById(R.id.AddServerDisplayID);
+        inputDisplay.setText( display == null ? "" : display );
+
+        int port = connectionConfig.getServer().getPort();
+        EditText inputPort = getView().findViewById(R.id.AddServerPort);
+        inputPort.setText( String.valueOf(port) );
+    }
+
+    @Override
     boolean isValid() {
         // TODO
         return true;

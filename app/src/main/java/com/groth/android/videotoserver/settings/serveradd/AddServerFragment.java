@@ -16,10 +16,9 @@ import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFr
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddServerFragment extends AbstractConnectionConfigChangeFragment implements ViewPager.OnPageChangeListener {
+public class AddServerFragment extends AbstractConnectionConfigChangeFragment {
 
     private AddServerWizardAdapter adapter;
-    private int previousPage = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,7 +34,6 @@ public class AddServerFragment extends AbstractConnectionConfigChangeFragment im
 
         adapter = new AddServerWizardAdapter(getChildFragmentManager(), pagerSteps, getContext());
 
-        pager.addOnPageChangeListener(this);
 
         pager.setAdapter(adapter);
 
@@ -44,28 +42,6 @@ public class AddServerFragment extends AbstractConnectionConfigChangeFragment im
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(pager);
         return view;
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        if (previousPage >= 0) {
-            // first validate and only then unbind otherwise select previous page
-            // and show Warning.
-            //TODO
-
-            ((AbstractAddServerWizardStepFragment) adapter.getItem(previousPage)).unbindStep();
-        }
-        previousPage = position;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        return;
     }
 
     @Override
