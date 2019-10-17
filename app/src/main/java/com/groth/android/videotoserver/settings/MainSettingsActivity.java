@@ -11,7 +11,6 @@ import com.groth.android.videotoserver.connection.Server;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public class MainSettingsActivity extends AppCompatActivity

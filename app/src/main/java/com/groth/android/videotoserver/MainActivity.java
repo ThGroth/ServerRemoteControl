@@ -14,9 +14,11 @@ import com.groth.android.videotoserver.connection.ConnectionState;
 import com.groth.android.videotoserver.connection.ServerConnection;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
+import com.groth.android.videotoserver.views.ButtonBar;
 import com.groth.android.videotoserver.views.touchfield.ButtonHandler;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -24,10 +26,12 @@ import androidx.core.content.ContextCompat;
 
 import android.os.IBinder;
 
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,17 +48,26 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        initButtonBar();
         // Mouse buttons have their own handler
         ButtonHandler buttonClickHandler = new ButtonHandler(this);
         registerButtons(buttonClickHandler);
-
-        findViewById(R.id.buttonReconnect).setOnClickListener((View view) -> setupConnection());
-
 
         checkPermissions();
         setupStatusPanel(ConnectionState.ServiceLoading,"");
         connectService();
     }
+
+    private void initButtonBar() {
+        LinearLayout buttonBarContainer = findViewById(R.id.buttonBar);
+        ButtonBar buttonBar = new ButtonBar();
+        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
+        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
+        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
+        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -99,29 +112,24 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public void setupStatusPanel(ConnectionState readyToConnect, String statusText) {
         TextView statusTextView = findViewById( R.id.StatusText );
         ProgressBar progress = findViewById( R.id.StatusProgress);
-        ImageButton buttonConnect = findViewById(R.id.buttonReconnect);
         switch (readyToConnect) {
             case ServiceLoading:
                 statusTextView.setVisibility(View.VISIBLE);
                 statusTextView.setText(R.string.status_not_connected);
                 progress.setVisibility(View.VISIBLE);
-                buttonConnect.setVisibility(View.INVISIBLE);
                 break;
             case ReadyToConnect:
                 statusTextView.setVisibility(View.VISIBLE);
                 statusTextView.setText( statusText );
                 progress.setVisibility(View.INVISIBLE);
-                buttonConnect.setVisibility(View.VISIBLE);
                 break;
             case Connecting:
                 progress.setVisibility(View.VISIBLE);
-                buttonConnect.setVisibility(View.INVISIBLE);
                 statusTextView.setVisibility(View.VISIBLE);
                 statusTextView.setText(statusText);
                 break;
             case Connected:
                 progress.setVisibility(View.INVISIBLE);
-                buttonConnect.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -141,11 +149,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (R.id.settings == item.getItemId()) {
-            //Toast.makeText(this, "ADD!", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(this, MainSettingsActivity.class);
-            startActivity(i);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.settings:
+                Intent i = new Intent(this, MainSettingsActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.menu_connect:
+                setupConnection();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

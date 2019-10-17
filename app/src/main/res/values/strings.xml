@@ -50,5 +50,6 @@
     <string name="AuthMethod">Authentication Method</string>
     <string name="ServerUser">Username for Server</string>
     <string name="currentServer">Currently Selected Server</string>
+    <string name="connect">Connect</string>
 
 </resources>
