@@ -22,7 +22,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 
-public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComands {
+public class ServerConnectionSSHImpl implements ServerConnection, SSHServerCommands {
 
     private static final String TAG = ServerConnectionSSHImpl.class.getName();
     private final MainActivity statusActivity;
@@ -89,9 +89,9 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComan
     }
 
     @Override
-    public void sendShellCommand(String cmd)
+    public void sendShellCommand(ServerCommand cmd)
     {
-        sendShellCommand(cmd,false);
+        sendShellCommand(cmd.getCommand(),cmd.getWithGui());
     }
 
     public void sendShellCommand(String cmd, boolean withGUI) {
@@ -127,7 +127,7 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComan
     @Override
     public void mouseMove(double dx, double dy) {
 
-        sendShellCommand(String.format(MOUSE_MOVE_RELATIVE,dx,dy) ,true);
+        sendShellCommand(MOUSE_MOVE_RELATIVE(dx,dy) );
     }
 
     @Override
@@ -137,7 +137,7 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComan
 
     @Override
     public void mouseClick(MouseClicks button) {
-        sendShellCommand(MOUSE_CLICK_LEFT,true);
+        sendShellCommand(MOUSE_CLICK_LEFT);
     }
 
     public void setIsConnected(ConnectionState state) {

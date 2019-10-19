@@ -9,14 +9,15 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.view.View;
 
+import com.groth.android.videotoserver.R;
 import com.groth.android.videotoserver.connection.ConnectionHandler;
 import com.groth.android.videotoserver.connection.MouseClicks;
-import com.groth.android.videotoserver.R;
-import com.groth.android.videotoserver.connection.ssh.SSHServerComands;
+import com.groth.android.videotoserver.connection.ssh.SSHServerCommands;
+import com.groth.android.videotoserver.connection.ssh.ServerCommand;
 
 public class ButtonHandler
         extends ContextWrapper
-        implements View.OnClickListener, ServiceConnection, SSHServerComands {
+        implements View.OnClickListener, ServiceConnection, SSHServerCommands {
     private ConnectionHandler serverConnectionService;
 
     public ButtonHandler(Context base) {
@@ -50,7 +51,7 @@ public class ButtonHandler
         }
     }
 
-    private void handleServerCommand(String cmd) {
+    private void handleServerCommand(ServerCommand cmd) {
         if (validateServerConnection() )
         {
             serverConnectionService.getConnection().sendShellCommand(cmd);

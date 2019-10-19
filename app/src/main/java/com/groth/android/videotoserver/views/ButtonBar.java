@@ -1,17 +1,18 @@
 package com.groth.android.videotoserver.views;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionHandler;
+import com.groth.android.videotoserver.connection.ssh.ServerCommand;
 
-import java.util.List;
+import java.util.HashMap;
 
-public class ButtonBar {
-    private List<ImageButton> buttons;
+public class ButtonBar implements View.OnClickListener {
+    private HashMap<Integer,ServerCommandButton> buttons;
+    private ConnectionHandler serverConnectionService;
 
     public ImageButton getMonitorDownButton(Context context)
     {
@@ -20,4 +21,32 @@ public class ButtonBar {
         return button;
     }
 
+    public void initNewButton(Context context, int imageResource, ServerCommand serverCommand) {
+        ServerCommandButton button = new ServerCommandButton(context, serverCommand);
+        button.setImageResource(imageResource);
+        button.setOnClickListener( this );
+        button.setId(View.generateViewId());
+        buttons.put(button.getId(), button);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (buttons.containsKey(view.getId()))
+        {
+            ServerCommandButton button = buttons.get(view.getId());
+
+        }
+    }
+
+    private void handleServerCommand(ServerCommand cmd) {
+        if (validateServerConnection() )
+        {
+            serverConnectionService.getConnection().sendShellCommand(cmd);
+        }
+    }
+
+    private boolean validateServerConnection()
+    {
+        return serverConnectionService != null;
+    }
 }
