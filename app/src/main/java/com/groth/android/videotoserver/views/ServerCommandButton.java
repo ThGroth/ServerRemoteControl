@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.groth.android.videotoserver.connection.ssh.ServerCommand;
 
-class ServerCommandButton extends AppCompatImageButton {
+public class ServerCommandButton extends AppCompatImageButton {
 
     private ServerCommand command;
 

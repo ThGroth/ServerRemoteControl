@@ -1,9 +1,9 @@
 package com.groth.android.videotoserver.connection.ssh;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.groth.android.videotoserver.MainActivity;
 import com.groth.android.videotoserver.R;
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.connection.ConnectionState;
@@ -24,17 +24,20 @@ public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
     private final ServerConnectionSSHImpl callingConnectionImpl;
 
     private PipedOutputStream cmdStream;
-    private final MainActivity progressActivity;
+    private final ConnectionCallbacks connectionCallbackManager;
+    private final Context context;
     private final ConnectionConfig connectionConfig;
 
     private Channel channel;
 
 
     public ConnectionAsyncTask(ServerConnectionSSHImpl connectionImp,
-                               final MainActivity progressActivity,
+                               final Context context,
+                               final ConnectionCallbacks connectionCallbackManager,
                                final ConnectionConfig connectionConfig)
     {
-        this.progressActivity = progressActivity;
+        this.context = context;
+        this.connectionCallbackManager = connectionCallbackManager;
         this.connectionConfig = connectionConfig;
         this.callingConnectionImpl = connectionImp;
     }
@@ -47,8 +50,8 @@ public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
     protected void onPreExecute()
     {
         super.onPreExecute();
-        String text = progressActivity.getResources().getString(R.string.status_connecting);
-        progressActivity.setupStatusPanel(ConnectionState.Connecting,
+        String text = context.getResources().getString(R.string.status_connecting);
+        connectionCallbackManager.setupStatusPanel(ConnectionState.Connecting,
                 String.format(text, connectionConfig.getServer().toString() ));
     }
 
@@ -66,14 +69,15 @@ public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
             // register the channel and the session and start the worker thread.
             callingConnectionImpl.startConnectionThread(sshSession,channel,cmdStream);
             callingConnectionImpl.setIsConnected(ServerConnectionSSHImpl.ConnectionState.CONNECTED);
-            String text = progressActivity.getResources().getString(R.string.status_connected);
-            progressActivity.setupStatusPanel(ConnectionState.Connected,
+            String text = context.getResources().getString(R.string.status_connected);
+            connectionCallbackManager.setupStatusPanel(ConnectionState.Connected,
                     String.format(text, connectionConfig.getServer().toString() ));
+            connectionCallbackManager.successfullyConnected();
         }
         else {
-            String text = progressActivity.getResources().getString(R.string.readyToConnect);
-            progressActivity.setupStatusPanel(ConnectionState.ReadyToConnect,text );
-            progressActivity.displayErrorMessage(errorMsg);
+            String text = context.getResources().getString(R.string.readyToConnect);
+            connectionCallbackManager.setupStatusPanel(ConnectionState.ReadyToConnect,text );
+            connectionCallbackManager.displayErrorMessage(errorMsg);
             callingConnectionImpl.setIsConnected(ServerConnectionSSHImpl.ConnectionState.FAILURE);
         }
 

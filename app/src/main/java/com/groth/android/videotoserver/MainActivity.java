@@ -7,40 +7,40 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import com.groth.android.videotoserver.connection.ConnectionConfig;
-import com.groth.android.videotoserver.connection.ConnectionHandler;
-import com.groth.android.videotoserver.connection.ConnectionState;
-import com.groth.android.videotoserver.connection.ServerConnection;
-import com.groth.android.videotoserver.settings.MainSettingsActivity;
-import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
-import com.groth.android.videotoserver.views.ButtonBar;
-import com.groth.android.videotoserver.views.touchfield.ButtonHandler;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.os.IBinder;
-
-import android.util.AttributeSet;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.groth.android.videotoserver.connection.ConnectionConfig;
+import com.groth.android.videotoserver.connection.ConnectionHandler;
+import com.groth.android.videotoserver.connection.ConnectionState;
+import com.groth.android.videotoserver.connection.ServerConnection;
+import com.groth.android.videotoserver.connection.ssh.ConnectionCallbacks;
+import com.groth.android.videotoserver.settings.MainSettingsActivity;
+import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
+import com.groth.android.videotoserver.views.ButtonBar;
+import com.groth.android.videotoserver.views.touchfield.MouseButtonHandler;
+
 import java.util.Optional;
 
-public class MainActivity extends AppCompatActivity implements ServiceConnection {
+import static com.groth.android.videotoserver.connection.ssh.SSHServerCommands.COMBI_MONITOR_START;
+import static com.groth.android.videotoserver.connection.ssh.SSHServerCommands.COMBI_MONITOR_STOP;
+
+public class MainActivity extends AppCompatActivity implements ServiceConnection, ConnectionCallbacks {
 
     private ConnectionHandler connectionHandler;
+    private ButtonBar buttonBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
         initButtonBar();
         // Mouse buttons have their own handler
-        ButtonHandler buttonClickHandler = new ButtonHandler(this);
+        MouseButtonHandler buttonClickHandler = new MouseButtonHandler(this);
         registerButtons(buttonClickHandler);
 
         checkPermissions();
@@ -61,11 +61,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     private void initButtonBar() {
         LinearLayout buttonBarContainer = findViewById(R.id.buttonBar);
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
-        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
-        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
-        buttonBarContainer.addView(buttonBar.getMonitorDownButton(this));
+        buttonBar = new ButtonBar();
+
+        buttonBar.initNewButton(this, R.drawable.monitor_down_24dp, COMBI_MONITOR_START);
+        buttonBar.initNewButton(this, R.drawable.monitor_up_24dp, COMBI_MONITOR_STOP);
+
+        buttonBar.getButtons().forEach( buttonBarContainer::addView );
     }
 
 
@@ -75,8 +76,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         unbindService(this);
     }
 
-    private void registerButtons(ButtonHandler buttonClickHandler) {
-
+    private void registerButtons(MouseButtonHandler buttonClickHandler) {
         findViewById(R.id.buttonGoto).setOnClickListener(buttonClickHandler);
         findViewById(R.id.leftMouseButton).setOnClickListener(buttonClickHandler);
         findViewById(R.id.middleMouseButton).setOnClickListener(buttonClickHandler);
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     }
 
+    @Override
     public void setupStatusPanel(ConnectionState readyToConnect, String statusText) {
         TextView statusTextView = findViewById( R.id.StatusText );
         ProgressBar progress = findViewById( R.id.StatusProgress);
@@ -132,8 +133,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                 progress.setVisibility(View.INVISIBLE);
                 break;
         }
-
-
     }
 
 
@@ -206,7 +205,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         // TODO toast or so
     }
 
+
+
     public void displayErrorMessage(String errorMsg) {
         Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void successfullyConnected() {
+        buttonBar.setServerConnectionService( connectionHandler );
     }
 }
