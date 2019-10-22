@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,17 +29,17 @@ import com.groth.android.videotoserver.connection.ssh.ConnectionCallbacks;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
 import com.groth.android.videotoserver.views.ButtonBar;
+import com.groth.android.videotoserver.views.OpenWebpageBar;
 import com.groth.android.videotoserver.views.touchfield.MouseButtonHandler;
 
 import java.util.Optional;
-
-import static com.groth.android.videotoserver.connection.ssh.SSHServerCommands.COMBI_MONITOR_START;
-import static com.groth.android.videotoserver.connection.ssh.SSHServerCommands.COMBI_MONITOR_STOP;
+import java.util.ServiceLoader;
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection, ConnectionCallbacks {
 
     private ConnectionHandler connectionHandler;
     private ButtonBar buttonBar;
+    private OpenWebpageBar openPageBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +48,11 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initOpenPageBar();
         initButtonBar();
         // Mouse buttons have their own handler
         MouseButtonHandler buttonClickHandler = new MouseButtonHandler(this);
-        registerButtons(buttonClickHandler);
+        registerMouseButtons(buttonClickHandler);
 
         checkPermissions();
         setupStatusPanel(ConnectionState.ServiceLoading,"");
@@ -60,15 +60,16 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     private void initButtonBar() {
-        LinearLayout buttonBarContainer = findViewById(R.id.buttonBar);
-        buttonBar = new ButtonBar();
-
-        buttonBar.initNewButton(this, R.drawable.monitor_down_24dp, COMBI_MONITOR_START);
-        buttonBar.initNewButton(this, R.drawable.monitor_up_24dp, COMBI_MONITOR_STOP);
-
-        buttonBar.getButtons().forEach( buttonBarContainer::addView );
+        buttonBar = new ButtonBar(this);
+        buttonBar.setContainer(findViewById(R.id.buttonBar));
+        buttonBar.initButtonBar();
     }
 
+    private void initOpenPageBar() {
+        openPageBar = new OpenWebpageBar(this);
+        openPageBar.setUrlInput(findViewById(R.id.inputUrl));
+        openPageBar.setSendButton(findViewById(R.id.buttonGoto));
+    }
 
     @Override
     protected void onDestroy() {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         unbindService(this);
     }
 
-    private void registerButtons(MouseButtonHandler buttonClickHandler) {
+    private void registerMouseButtons(MouseButtonHandler buttonClickHandler) {
         findViewById(R.id.buttonGoto).setOnClickListener(buttonClickHandler);
         findViewById(R.id.leftMouseButton).setOnClickListener(buttonClickHandler);
         findViewById(R.id.middleMouseButton).setOnClickListener(buttonClickHandler);
@@ -213,6 +214,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void successfullyConnected() {
-        buttonBar.setServerConnectionService( connectionHandler );
+        ServiceLoader<ConnectionServiceListeners> loader = ServiceLoader.load(ConnectionServiceListeners.class);
+        for (ConnectionServiceListeners implementation : loader) {
+            implementation.setServerConnectionService(connectionHandler);
+        }
+
     }
 }
