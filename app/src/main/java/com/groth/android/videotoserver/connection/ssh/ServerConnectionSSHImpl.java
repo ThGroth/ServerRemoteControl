@@ -1,9 +1,8 @@
 package com.groth.android.videotoserver.connection.ssh;
 
+import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.groth.android.videotoserver.MainActivity;
 import com.groth.android.videotoserver.R;
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.connection.MouseClicks;
@@ -21,23 +20,29 @@ import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
+import static com.groth.android.videotoserver.connection.ServerConnection.ConnectionState.CONNECTED;
+import static com.groth.android.videotoserver.connection.ServerConnection.ConnectionState.UNCONNECTED;
+
 
 public class ServerConnectionSSHImpl implements ServerConnection, SSHServerCommands {
 
     private static final String TAG = ServerConnectionSSHImpl.class.getName();
-    private final MainActivity statusActivity;
+    private final Context context;
+    private final ConnectionCallbacks callbackManager;
     private ConnectionThread connectionThread;
 
     private BufferedWriter cmdOutputStream;
     private PipedInputStream cmdInputStream;
-    private ConnectionState connectionState = ConnectionState.UNCONNECTED;
+    private ConnectionState connectionState = UNCONNECTED;
 
     private ConnectionConfig connectionConfig = null;
 
-    public ServerConnectionSSHImpl(final ConnectionConfig connectionConfig, final MainActivity statusActivity)
+    public ServerConnectionSSHImpl(final ConnectionConfig connectionConfig, final Context context,
+                                   ConnectionCallbacks calllbackManager)
     {
         this.connectionConfig = connectionConfig;
-        this.statusActivity = statusActivity;
+        this.callbackManager = calllbackManager;
+        this.context = context;
         PipedOutputStream pipedOutputStream = new PipedOutputStream();
         cmdOutputStream = new BufferedWriter(new OutputStreamWriter(pipedOutputStream));
         try {
@@ -50,8 +55,7 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComma
     public void connect()
     {
         ConnectionAsyncTask connectionTask = new ConnectionAsyncTask(this,
-            statusActivity,
-            connectionConfig);
+                context, callbackManager, connectionConfig);
         connectionTask.execute();
         // The connection flag will be set by the Post Method of the AsyncTask.
     }
@@ -66,21 +70,21 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComma
     @Override
     public void disconnect()
     {
+        callbackManager.setupStatusPanel(com.groth.android.videotoserver.connection.ConnectionState.ReadyToConnect,
+                context.getString(R.string.status_not_connected));
         if (connectionThread != null)
         {
             connectionThread.interrupt();
         }
-        TextView statusText = statusActivity.findViewById( R.id.StatusText );
-        statusText.setText( R.string.status_not_connected );
-        connectionState = ConnectionState.UNCONNECTED;
+        connectionState = UNCONNECTED;
     }
 
     @Override
     public ConnectionState getConnectionState()
     {
-        if (connectionState.equals(ConnectionState.CONNECTED)  && cmdInputStream == null )
+        if (connectionState.equals(CONNECTED) && cmdInputStream == null)
         {
-            return ConnectionState.UNCONNECTED;
+            return UNCONNECTED;
         }
         else{
             return connectionState;
@@ -99,7 +103,7 @@ public class ServerConnectionSSHImpl implements ServerConnection, SSHServerComma
         {
             cmd = modifyCmdForDisplay(cmd);
         }
-        if (connectionState.equals(ConnectionState.CONNECTED))
+        if (connectionState.equals(CONNECTED))
         {
             try {
                 cmdOutputStream.write(cmd);

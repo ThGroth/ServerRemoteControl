@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         ServerConfigPreferenceManager manager = ServerConfigPreferenceManager.getInstance();
         Optional<ConnectionConfig> config = manager.getCurrentServerConfig(this);
         if ( config.isPresent() ) {
-            connectionHandler.initNewConnection(config.get(), this);
+            connectionHandler.initNewConnection(config.get(), this, this);
             connection = connectionHandler.getConnection();
             if (connection.getConnectionState().equals(ServerConnection.ConnectionState.UNCONNECTED))
             {

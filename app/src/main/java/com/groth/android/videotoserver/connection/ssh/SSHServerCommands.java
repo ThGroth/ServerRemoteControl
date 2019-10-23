@@ -6,9 +6,14 @@ public interface SSHServerCommands {
     ServerCommand COMBI_MONITOR_START =  new ServerCommand("filmab",false);
     ServerCommand COMBI_MONITOR_STOP =  new ServerCommand("filmaus",false);
 
+
     default ServerCommand MOUSE_MOVE_RELATIVE(double dx,double dy)
     {
         return new ServerCommand( "xdotool mousemove_relative %f %f" , true, dx ,dy);
+    }
+
+    default ServerCommand SEND_URL(String url) {
+        return new ServerCommand("firefox %s", true, url);
     }
 
 }

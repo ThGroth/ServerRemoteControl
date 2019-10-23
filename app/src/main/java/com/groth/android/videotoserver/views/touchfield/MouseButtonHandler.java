@@ -29,9 +29,6 @@ public class MouseButtonHandler
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buttonGoto:
-                handleServerCommand(COMBI_MONITOR_START);
-                break;
             case R.id.leftMouseButton:
                 handleMouseClick(MouseClicks.LEFT_CLICK);
                 break;
