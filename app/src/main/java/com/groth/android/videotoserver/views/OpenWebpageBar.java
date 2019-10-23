@@ -35,6 +35,7 @@ public class OpenWebpageBar implements View.OnClickListener, ConnectionServiceLi
         this.sendButton = sendButton;
         if (connectionHandler == null) {
             sendButton.setEnabled(false);
+            sendButton.setAlpha(ServerCommandButton.ALPHA_DISABLED);
         }
         sendButton.setOnClickListener(this);
     }
@@ -75,12 +76,14 @@ public class OpenWebpageBar implements View.OnClickListener, ConnectionServiceLi
     public void setServerConnectionService(ConnectionHandler connectionHandler) {
         this.connectionHandler = connectionHandler;
         sendButton.setEnabled(true);
+        sendButton.setAlpha(ServerCommandButton.ALPHA_ENABLED);
     }
 
     @Override
     public void onServiceStopped() {
         savePrefs();
         sendButton.setEnabled(false);
+        sendButton.setAlpha(ServerCommandButton.ALPHA_DISABLED);
 
     }
 

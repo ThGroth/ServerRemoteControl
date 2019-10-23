@@ -9,6 +9,8 @@ import com.groth.android.videotoserver.connection.ssh.ServerCommand;
 public class ServerCommandButton extends AppCompatImageButton {
 
     private ServerCommand command;
+    public static final float ALPHA_ENABLED = 1F;
+    public static final float ALPHA_DISABLED = 0.15F;
 
     public ServerCommandButton(Context context) {
         super(context);
@@ -19,6 +21,13 @@ public class ServerCommandButton extends AppCompatImageButton {
         super(context);
         this.command = command;
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        setAlpha(enabled ? ALPHA_ENABLED : ALPHA_DISABLED);
+    }
+
 
     public ServerCommand getCommand() {
         return command;
