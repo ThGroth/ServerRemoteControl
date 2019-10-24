@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.groth.android.videotoserver.MainActivity" >
     <item android:id="@+id/settings"
-        android:title="@string/action_settings"
+        android:title="@string/action_settings_server"
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item android:id="@+id/menu_connect"

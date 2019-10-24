@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.views;
+package com.groth.android.videotoserver.buttonBar;
 
 import android.content.Context;
 

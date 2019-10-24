@@ -1,4 +1,4 @@
-package com.groth.android.videotoserver.views;
+package com.groth.android.videotoserver.buttonBar;
 
 import android.content.Context;
 import android.view.View;
@@ -14,7 +14,7 @@ public class ServerButtonCollection implements View.OnClickListener, ConnectionS
     private HashMap<Integer, ServerCommandButton> buttons = new HashMap<>();
     private ConnectionHandler serverConnectionService;
 
-    public void initNewButton(Context context, int imageResource, ServerCommand serverCommand) {
+    public ServerCommandButton initNewButton(Context context, int imageResource, ServerCommand serverCommand) {
         ServerCommandButton button = new ServerCommandButton(context, serverCommand);
         button.setImageResource(imageResource);
         button.setOnClickListener(this);
@@ -23,7 +23,7 @@ public class ServerButtonCollection implements View.OnClickListener, ConnectionS
             button.setEnabled(false);
         }
         buttons.put(button.getId(), button);
-
+        return button;
     }
 
     public void registerButton(ServerCommandButton button) {
@@ -63,5 +63,9 @@ public class ServerButtonCollection implements View.OnClickListener, ConnectionS
 
     public Collection<ServerCommandButton> getButtons() {
         return buttons.values();
+    }
+
+    public HashMap<Integer, ServerCommandButton> getButtonHashMap() {
+        return buttons;
     }
 }

@@ -21,6 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.groth.android.videotoserver.buttonBar.ButtonBar;
+import com.groth.android.videotoserver.buttonBar.OpenWebpageBar;
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.connection.ConnectionHandler;
 import com.groth.android.videotoserver.connection.ConnectionState;
@@ -28,8 +30,6 @@ import com.groth.android.videotoserver.connection.ServerConnection;
 import com.groth.android.videotoserver.connection.ssh.ConnectionCallbacks;
 import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
-import com.groth.android.videotoserver.views.ButtonBar;
-import com.groth.android.videotoserver.views.OpenWebpageBar;
 import com.groth.android.videotoserver.views.touchfield.MouseButtonHandler;
 
 import java.util.Optional;
