@@ -1,18 +1,12 @@
 package com.groth.android.videotoserver.settings.serveradd;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.settings.AbstractConnectionConfigChangeFragment;
-
-import java.util.Optional;
 
 
 public abstract class AbstractAddServerWizardStepFragment
@@ -51,7 +45,6 @@ public abstract class AbstractAddServerWizardStepFragment
             return;
         }
         // Step specific implementation here
-        ConnectionConfig before = getCurrentConnectionConfig();
         unbind( getCurrentConnectionConfig() );
     }
 

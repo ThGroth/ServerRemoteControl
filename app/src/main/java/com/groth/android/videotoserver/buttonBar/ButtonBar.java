@@ -1,8 +1,6 @@
 package com.groth.android.videotoserver.buttonBar;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -50,8 +48,8 @@ public class ButtonBar extends ServerButtonCollection implements View.OnLongClic
 
     private void showButtonChangeDialog(ServerCommandButton serverCommandButton) {
         ButtonChangeDialog dialog = new ButtonChangeDialog(context, fragmentManager, serverCommandButton);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+
+        dialog.show(fragmentManager, "some tag");
     }
 
     public Context getContext() {
