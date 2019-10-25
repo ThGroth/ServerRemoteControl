@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.groth.android.videotoserver.R;
 
 import java.util.HashMap;
@@ -16,10 +18,12 @@ import static com.groth.android.videotoserver.connection.ssh.SSHServerCommands.C
 public class ButtonBar extends ServerButtonCollection implements View.OnLongClickListener {
 
     private Context context;
+    private FragmentManager fragmentManager;
     private ViewGroup container;
 
-    public ButtonBar(Context context) {
+    public ButtonBar(Context context, FragmentManager fragmentManager) {
         this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     public void setContainer(ViewGroup containerView) {
@@ -45,8 +49,16 @@ public class ButtonBar extends ServerButtonCollection implements View.OnLongClic
     }
 
     private void showButtonChangeDialog(ServerCommandButton serverCommandButton) {
-        ButtonChangeDialog dialog = new ButtonChangeDialog(context, serverCommandButton);
+        ButtonChangeDialog dialog = new ButtonChangeDialog(context, fragmentManager, serverCommandButton);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
     }
 }

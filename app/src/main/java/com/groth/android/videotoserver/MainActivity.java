@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     private void initButtonBar() {
-        buttonBar = new ButtonBar(this);
+        buttonBar = new ButtonBar(this, getSupportFragmentManager());
         buttonBar.setContainer(findViewById(R.id.buttonBar));
         buttonBar.initButtonBar();
     }

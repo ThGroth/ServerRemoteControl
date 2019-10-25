@@ -20,7 +20,7 @@ public class ServerButtonCollection implements View.OnClickListener, ConnectionS
         button.setOnClickListener(this);
         button.setId(View.generateViewId());
         if (serverConnectionService == null) {
-            button.setEnabled(false);
+            //         button.setEnabled(false);
         }
         buttons.put(button.getId(), button);
         return button;
