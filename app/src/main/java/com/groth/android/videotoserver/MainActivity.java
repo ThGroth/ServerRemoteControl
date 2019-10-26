@@ -32,14 +32,16 @@ import com.groth.android.videotoserver.settings.MainSettingsActivity;
 import com.groth.android.videotoserver.settings.ServerConfigPreferenceManager;
 import com.groth.android.videotoserver.views.touchfield.MouseButtonHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.ServiceLoader;
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection, ConnectionCallbacks {
 
     private ConnectionHandler connectionHandler;
     private ButtonBar buttonBar;
     private OpenWebpageBar openPageBar;
+    List<ConnectionServiceListeners> connectionServiceListenersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         buttonBar = new ButtonBar(this, getSupportFragmentManager());
         buttonBar.setContainer(findViewById(R.id.buttonBar));
         buttonBar.initButtonBar();
+        connectionServiceListenersList.add(buttonBar);
     }
 
     private void initOpenPageBar() {
         openPageBar = new OpenWebpageBar(this);
         openPageBar.setUrlInput(findViewById(R.id.inputUrl));
         openPageBar.setSendButton(findViewById(R.id.buttonGoto));
+        connectionServiceListenersList.add(openPageBar);
     }
 
     @Override
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                 break;
             case Connected:
                 progress.setVisibility(View.INVISIBLE);
+                statusTextView.setText(statusText);
                 break;
         }
     }
@@ -207,17 +212,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-
+    @Override
     public void displayErrorMessage(String errorMsg) {
         Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void successfullyConnected() {
-        ServiceLoader<ConnectionServiceListeners> loader = ServiceLoader.load(ConnectionServiceListeners.class);
-        for (ConnectionServiceListeners implementation : loader) {
-            implementation.setServerConnectionService(connectionHandler);
+        for (ConnectionServiceListeners listener : connectionServiceListenersList) {
+            listener.setServerConnectionService(connectionHandler);
         }
-
     }
 }

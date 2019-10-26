@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.R;
+import com.groth.android.videotoserver.connection.ConnectionConfig;
 import com.groth.android.videotoserver.connection.Server;
 
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ public class MainSettingsActivity extends AppCompatActivity
         if (save)
         {
             dbManager.setCurrentServerConfig(currentConfig,this);
+            dbManager.store(serverList, this);
         }
     }
 
@@ -52,6 +53,7 @@ public class MainSettingsActivity extends AppCompatActivity
     @Override
     public void onConnectionConfigAdded(ConnectionConfig connectionConfig) {
         this.serverList.add(connectionConfig);
+        onCurrentConnectionConfigChange(connectionConfig, true);
     }
 
     @Override

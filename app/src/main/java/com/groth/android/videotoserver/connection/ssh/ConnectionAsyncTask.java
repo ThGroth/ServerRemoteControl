@@ -104,7 +104,12 @@ public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
         jsch.setConfig("StrictHostKeyChecking", "no");
         if ( connectionConfig.isKeyBased() ) {
             try {
-                jsch.addIdentity(connectionConfig.getPrivateKeyFile());
+                if (connectionConfig.getPassphrase() != null
+                        && !connectionConfig.getPassphrase().isEmpty()) {
+                    jsch.addIdentity(connectionConfig.getPrivateKeyFile(), connectionConfig.getPassphrase());
+                } else {
+                    jsch.addIdentity(connectionConfig.getPrivateKeyFile());
+                }
             } catch (JSchException e) {
                 Log.w(TAG, "Adding identity failed.");
                 Log.w(TAG, Log.getStackTraceString(e));
@@ -144,6 +149,7 @@ public class ConnectionAsyncTask extends AsyncTask<Void , Void , Boolean> {
         catch( JSchException e){
             Log.w(TAG,"Connection failed.");
             Log.w(TAG,Log.getStackTraceString(e));
+            errorMsg = e.getLocalizedMessage();
             return Boolean.FALSE;
         }
         return Boolean.valueOf(sshSession.isConnected());
